@@ -1,12 +1,12 @@
 # First testing script from TDD with Python book
 
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -22,7 +22,7 @@ class NewVisitorTest(unittest.TestCase):
 
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Bob goes to look at webpage
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         # He notices the page title and header mentions to-do lists
         self.assertIn('To-Do', self.browser.title)
@@ -54,7 +54,6 @@ class NewVisitorTest(unittest.TestCase):
         # The page updates again, and now shows both items in his list.
         self.check_for_row_in_list_table('1: Buy feathers')
         self.check_for_row_in_list_table('2: Use feathers to make a fly')
-
         # Bob wonders whether the site will remember his list.
         # Then he sees that the site has generated a unique URL
         # for him -- there is some explanatory text to that
@@ -64,6 +63,3 @@ class NewVisitorTest(unittest.TestCase):
         # He visits that URL - his to-do list is still there.
 
         # satisfied, he goes back to sleep.
-
-if __name__ == '__main__':
-    unittest.main(warnings='ignore')
